@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Email Signature Builder</title>
+<style>
+  :root {
+    --bg: #f4f4f2; --panel: #ffffff; --text: #222222; --muted: #6b6b6b; --line: #dddddb;
+    --accent: #1f1f1f; --accent-text: #ffffff; --ok: #2e7d4f; --warn: #b3261e; --field: #ffffff;
+    --changed: #fff6d6; --changed-line: #d9a400;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.5 Aptos, "Segoe UI", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; }
+  input, textarea, button, select { font-family: inherit; }
+  .wrap { max-width: 820px; margin: 0 auto; padding: 32px 16px 64px; }
+  .logo { display: block; width: 160px; height: auto; margin: 0 0 18px; fill: #000000; }
+  h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 22px; margin-bottom: 20px; }
+  .panel h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 14px; }
+  .who { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
+  .who label { font-weight: 600; margin: 0; }
+  .who select { min-width: 240px; flex: 1 1 240px; }
+  .greet { margin: 14px 0 0; }
+  label { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 5px; }
+  label .opt { font-weight: 400; color: var(--muted); }
+  input, textarea, select { width: 100%; font-size: 15px; color: var(--text); background: var(--field);
+         border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; }
+  textarea { resize: vertical; min-height: 64px; }
+  input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  .changed { background: var(--changed); border-color: var(--changed-line); }
+  .was { font-size: 13px; color: #8a6d00; margin-top: 4px; white-space: pre-line; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 8px; }
+  .invalid { border-color: var(--warn); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+  @media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
+  /* Preview always on white: that's how recipients see it */
+  .preview-box { background: #ffffff; border: 1px solid var(--line); border-radius: 8px; padding: 24px; overflow-x: auto; }
+  /* Isolate the signature from this page's styles so it spaces exactly as it will in an email */
+  #sig { font: initial; line-height: normal; color: initial; letter-spacing: normal; text-align: left; }
+  .phone .preview-box { max-width: 380px; }
+  .mode { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; padding: 3px; margin: 0 0 14px; gap: 3px; }
+  .mode button { background: transparent; color: var(--text); border: 0; font-weight: 600; padding: 7px 16px; font-size: 14px; border-radius: 6px; }
+  .mode button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); }
+  .modenote { color: var(--muted); font-size: 13px; margin: -6px 0 14px; }
+  .confirm { display: flex; gap: 10px; align-items: flex-start; margin: 18px 0 14px; font-size: 14px; font-weight: 400; }
+  .confirm input { width: auto; margin-top: 3px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { font-size: 15px; font-weight: 600; border-radius: 6px; padding: 10px 16px; cursor: pointer;
+           border: 1px solid var(--accent); background: var(--accent); color: var(--accent-text); }
+  button.secondary { background: transparent; color: var(--text); border-color: var(--line); }
+  button:disabled { opacity: .4; cursor: not-allowed; }
+  .status { min-height: 22px; margin-top: 10px; font-size: 14px; font-weight: 600; }
+  .status.ok { color: var(--ok); } .status.err { color: var(--warn); }
+  .changes { margin-top: 14px; padding: 12px 14px; border-radius: 8px; background: var(--changed); border: 1px solid var(--changed-line); font-size: 14px; }
+  .changes ul { margin: 6px 0 0; padding-left: 18px; }
+  .changes a.mail { display: inline-block; margin-top: 10px; font-weight: 600; color: var(--text); }
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tabs button { background: transparent; color: var(--text); border: 1px solid var(--line); font-weight: 500; padding: 7px 12px; font-size: 14px; }
+  .tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+  ol { margin: 0; padding-left: 20px; } ol li { margin: 6px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="https://www.raven.com.au/" target="_blank" rel="noopener"><svg class="logo" role="img" aria-label="Raven" width="160" height="49" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 85"> <defs> <style> .logo .cls-1 { fill-rule: evenodd; } </style> </defs> <path d="M72.29,16.19h6.6l15.18-.06c14.68,0,20.16,7.21,20.16,16.1,0,6.8-5.48,12.6-12.94,14.96l12.89,24.02h-15.38l-11.1-27.47,1.39-.12c6.85,0,12.39-4.76,12.39-10.62s-5.54-10.63-12.39-10.63h-4.11v48.62h-12.69V16.19h0Z"/> <path class="cls-1" d="M134.58,26.72l-8.6,25.29h16.35l-7.74-25.29h0ZM131.35,16.16h13.36l19.27,55.16h-15.75l-3.71-12.11h-20.99l-4.08,12h-6.82l18.72-55.04h0Z"/> <path d="M269.71,41.01c-.05-.06-.09-.12-.12-.18"/> <polygon points="213.77 35.45 230.21 35.45 230.21 42.05 213.77 42.05 213.77 64.6 232.34 64.6 232.34 71.2 213.77 71.2 210.64 71.2 200.25 71.2 200.25 16.16 210.64 16.16 213.77 16.16 232.34 16.16 232.34 22.76 213.77 22.76 213.77 35.45 213.77 35.45 213.77 35.45"/> <polygon points="271.65 16.16 278.65 16.16 278.65 71.2 271.65 71.2 244.47 29.47 244.47 71.2 237.47 71.2 237.47 16.16 253.77 16.16 271.65 44.07 271.65 16.16 271.65 16.16 271.65 16.16"/> <polygon points="154.3 16.16 169.66 16.16 180.53 44.98 191.76 16.16 198.51 16.16 176.4 73.49 154.3 16.16 154.3 16.16 154.3 16.16"/> <path d="M56.06,6.49c0-1.06.85-1.92,1.9-1.92s1.9.86,1.9,1.92-.85,1.92-1.9,1.92-1.9-.86-1.9-1.92h0Z"/> <polygon points="79.13 0 65.6 0 65.6 4.54 79.13 0 79.13 0 79.13 0"/> <polygon points="65.69 6.72 65.69 12.28 78.77 2.54 65.69 6.72 65.69 6.72 65.69 6.72"/> <polygon points="21.66 45.98 0 77.52 23.65 77.52 30 45.98 21.66 45.98 21.66 45.98 21.66 45.98"/> <path class="cls-1" d="M275.01,85c2.76,0,4.99-2.26,4.99-5.05s-2.23-5.02-4.99-5.02-5.01,2.26-5.01,5.02,2.24,5.05,5.01,5.05h0ZM275.01,84.33c-2.44,0-4.22-1.91-4.22-4.38s1.78-4.36,4.22-4.36,4.2,1.91,4.2,4.36-1.77,4.38-4.2,4.38h0ZM275.82,80.17c.99-.03,1.76-.44,1.76-1.55,0-.93-.5-1.49-1.98-1.49h-2.44v5.62h.69v-2.59h1.25l1.6,2.59h.82l-1.69-2.59h0ZM273.84,79.63v-1.99h1.6c.69,0,1.4.1,1.4.99,0,1.14-1.16,1.01-1.95,1.01h-1.04Z"/> <path d="M45.76,11.14l-22.82,32.43h9.61c10.41,0,18.88-8.44,18.88-18.93,0-5.32-2.17-10.06-5.67-13.5h0Z"/> <polygon points="62.9 60.73 59.48 64.24 63.86 64.22 63.86 66.51 59.74 66.52 63.08 70.04 61.44 71.62 41.17 50.26 44.34 50.26 56.95 63.57 61.28 59.13 62.9 60.73 62.9 60.73 62.9 60.73"/> <polygon points="40.83 60.65 37.39 64.18 42.1 64.18 42.1 66.46 37.51 66.46 40.85 69.93 39.22 71.52 32.99 65.03 32.99 50.27 35.26 50.27 35.26 63.11 39.21 59.06 40.83 60.65 40.83 60.65 40.83 60.65"/> <path class="cls-1" d="M53.08,6.46c0-2.14,1.72-3.88,3.85-3.88s3.85,1.74,3.85,3.88-1.72,3.88-3.85,3.88-3.85-1.74-3.85-3.88h0ZM51.48,3.06C53.93-.44,57.08.11,57.08.11h6.12c0,1.62.04,14.32.04,26.38,0,15.82-11.81,21.27-21.39,21.27h-9.2v-1.74c11.69-.04,21.16-9.6,21.16-21.38,0-6.04-2.49-11.5-6.49-15.39.54-.83,2.18-3.34,4.17-6.19h0Z"/> </svg></a>
+  <h1>Email Signature Builder</h1>
+  <p class="sub">Your signature is filled in from our records. Check it, fix anything that's wrong, then copy it into your email app.</p>
+
+  <div class="panel">
+    <div class="who">
+      <label for="who">Signature for</label>
+      <select id="who"></select>
+    </div>
+    <p class="greet" id="greet" hidden></p>
+  </div>
+
+  <div class="panel" id="sigPanel">
+    <h2>Your signature</h2>
+    <div class="mode" role="group" aria-label="Signature type">
+      <button type="button" data-m="desktop" aria-pressed="true">Computer</button>
+      <button type="button" data-m="phone" aria-pressed="false">Phone</button>
+    </div>
+    <p class="modenote" id="modenote"></p>
+    <div class="preview-box"><div id="sig"></div></div>
+
+    <div id="changes" class="changes" hidden></div>
+
+    <label class="confirm"><input type="checkbox" id="checked">
+      <span>I have checked my name, position, phone numbers, email and address are correct.</span></label>
+    <div class="btns">
+      <button id="copyHtml" disabled>Copy signature</button>
+      <button id="copyText" class="secondary" disabled>Copy as plain text</button>
+      <button id="editBtn" class="secondary">Edit details</button>
+    </div>
+    <div class="status" id="status" role="status"></div>
+  </div>
+
+  <div class="panel" id="editPanel" hidden>
+    <h2>Edit details</h2>
+    <form id="f" onsubmit="return false">
+      <div class="grid2">
+        <div><label for="FULL_NAME">Full name</label><input id="FULL_NAME"><div class="was" id="was-FULL_NAME" hidden></div></div>
+        <div><label for="POSITION">Position</label><input id="POSITION"><div class="was" id="was-POSITION" hidden></div></div>
+        <div><label for="LANDLINE">Landline phone <span class="opt">(optional)</span></label><input id="LANDLINE" type="tel"><div class="was" id="was-LANDLINE" hidden></div></div>
+        <div><label for="FAX">Fax number <span class="opt">(optional)</span></label><input id="FAX" type="tel"><div class="was" id="was-FAX" hidden></div></div>
+        <div><label for="MOBILE">Mobile phone <span class="opt">(optional)</span></label><input id="MOBILE" type="tel"><div class="was" id="was-MOBILE" hidden></div></div>
+        <div><label for="EMAIL">Email address</label><input id="EMAIL" type="email"><div class="was" id="was-EMAIL" hidden></div></div>
+        <div><label for="COMPANY">Company name</label><textarea id="COMPANY" rows="2"></textarea><div class="was" id="was-COMPANY" hidden></div></div>
+        <div><label for="ADDRESS">Address</label><textarea id="ADDRESS" rows="4"></textarea><div class="was" id="was-ADDRESS" hidden></div></div>
+      </div>
+      <div class="hint">Changed fields are highlighted. Press Enter for a new line. Leave optional numbers blank to hide them. The phone signature doesn't show the fax number.</div>
+      <div class="btns" style="margin-top:14px"><button type="button" id="resetBtn" class="secondary">Undo my changes</button></div>
+    </form>
+  </div>
+
+  <div class="panel" id="pastePanel">
+    <h2 id="pasteTitle">Paste it into Outlook</h2>
+    <div class="tabs" role="tablist" id="tabs">
+      <button role="tab" data-t="new" data-g="desktop">New Outlook (Windows &amp; Mac)</button>
+      <button role="tab" data-t="web" data-g="desktop">Outlook on the web</button>
+      <button role="tab" data-t="macold" data-g="desktop">Legacy Outlook for Mac</button>
+      <button role="tab" data-t="classic" data-g="desktop">Classic Outlook (Windows)</button>
+      <button role="tab" data-t="p-outlook-ios" data-g="phone">Outlook (iPhone)</button>
+      <button role="tab" data-t="p-outlook-android" data-g="phone">Outlook (Android)</button>
+      <button role="tab" data-t="p-applemail" data-g="phone">Apple Mail (iPhone)</button>
+      <button role="tab" data-t="p-gmail" data-g="phone">Gmail</button>
+      <button role="tab" data-t="p-other" data-g="phone">Other apps</button>
+    </div>
+    <div data-p="p-outlook-ios" hidden><ol>
+      <li>Tap <b>Copy signature</b> above.</li>
+      <li>Open the <b>Outlook</b> app, tap your <b>profile picture</b> (top left), then the <b>gear icon</b> (Settings).</li>
+      <li>Tap <b>Signature</b> (under Mail). Delete what's there, then touch and hold in the box and tap <b>Paste</b>.</li>
+      <li>Tap back to save. If you have several accounts, turn on <b>Per Account Signature</b> to set it for your Raven account only.</li>
+    </ol><p class="hint">If the formatting looks wrong after pasting, delete it, tap <b>Copy as plain text</b> instead and paste again.</p></div>
+    <div data-p="p-outlook-android" hidden><ol>
+      <li>Tap <b>Copy as plain text</b> above (Outlook on Android only supports plain text signatures).</li>
+      <li>Open the <b>Outlook</b> app, tap your <b>profile picture</b> (top left), then the <b>gear icon</b> (Settings).</li>
+      <li>Tap <b>Signature</b>. Delete what's there, then touch and hold in the box and tap <b>Paste</b>.</li>
+      <li>Tap the <b>✓</b> (top right) to save.</li>
+    </ol></div>
+    <div data-p="p-applemail" hidden><ol>
+      <li>Tap <b>Copy signature</b> above.</li>
+      <li>Open the iPhone <b>Settings</b> app &gt; <b>Apps</b> &gt; <b>Mail</b> &gt; <b>Signature</b> (on older iPhones: Settings &gt; <b>Mail</b> &gt; Signature).</li>
+      <li>Choose <b>Per Account</b> if you have several accounts. Delete what's there, then touch and hold and tap <b>Paste</b>.</li>
+      <li>Tip: if the bold text disappears, <b>shake your iPhone</b> straight away and tap <b>Undo</b>. That brings the formatting back.</li>
+      <li>Go back to save.</li>
+    </ol></div>
+    <div data-p="p-gmail" hidden><ol>
+      <li>Tap <b>Copy as plain text</b> above (the Gmail app only supports plain text signatures).</li>
+      <li>Open the <b>Gmail</b> app, tap the <b>menu</b> (☰, top left) &gt; <b>Settings</b> &gt; your <b>email account</b>.</li>
+      <li><b>Android:</b> tap <b>Mobile signature</b>. <b>iPhone:</b> tap <b>Signature settings</b> and turn on <b>Mobile signature</b>.</li>
+      <li>Paste into the box and tap <b>OK</b> / save.</li>
+    </ol></div>
+    <div data-p="p-other" hidden><ol>
+      <li>Tap <b>Copy as plain text</b> above (plain text works in every app).</li>
+      <li>Open your email app's <b>Settings</b> and look for <b>Signature</b>. On Samsung Email: menu (☰) &gt; gear icon &gt; your account &gt; <b>Signature</b>.</li>
+      <li>Paste into the box and save.</li>
+    </ol></div>
+    <div data-p="new"><ol>
+      <li>Click <b>Copy signature</b> above.</li>
+      <li><b>Windows:</b> click the gear icon (Settings) &gt; <b>Accounts</b> &gt; <b>Signatures</b>.<br>
+          <b>Mac:</b> <b>Outlook</b> menu &gt; <b>Settings</b> &gt; <b>Signatures</b>.</li>
+      <li>Create a new signature, name it <b>Raven Signature</b>, click in the box and paste (<b>Ctrl+V</b> / <b>⌘V</b>).</li>
+      <li>Set it as the default for new messages and replies/forwards, then <b>Save</b>.</li>
+    </ol></div>
+    <div data-p="web" hidden><ol>
+      <li>Click <b>Copy signature</b> above.</li>
+      <li>In Outlook on the web, click the gear icon &gt; <b>Accounts</b> &gt; <b>Signatures</b>.</li>
+      <li>Create a new signature named <b>Raven Signature</b>, click in the box and paste (<b>Ctrl+V</b> / <b>⌘V</b>).</li>
+      <li>Set it as the default for new messages and replies/forwards, then <b>Save</b>.</li>
+    </ol></div>
+    <div data-p="macold" hidden><ol>
+      <li>Click <b>Copy signature</b> above.</li>
+      <li>In Outlook, go to <b>Outlook</b> menu &gt; <b>Settings</b> (or Preferences) &gt; <b>Signatures</b>.</li>
+      <li>Click <b>+</b>, name it <b>Raven Signature</b>, delete any sample text, click in the box and paste (<b>⌘V</b>).</li>
+      <li>Close the editor, then choose it as the default for new messages and replies under <b>Choose default signature</b>.</li>
+    </ol></div>
+    <div data-p="classic" hidden><ol>
+      <li><b>Easiest:</b> run the <b>Install Signature</b> installer from IT. It installs and sets your default automatically.</li>
+      <li>Or manually: click <b>Copy signature</b>, then in Outlook go to <b>File</b> &gt; <b>Options</b> &gt; <b>Mail</b> &gt; <b>Signatures</b>.</li>
+      <li>Click <b>New</b>, name it <b>Raven Signature</b>, paste into the box (<b>Ctrl+V</b>), choose it for new messages and replies/forwards, then <b>OK</b>.</li>
+    </ol></div>
+  </div>
+</div>
+
+<script>
+// ================= SETTINGS =================================================================
+// How you're told when someone changes their details (set one or both):
+//   ALERT_ENDPOINT - a form service URL (e.g. https://formspree.io/f/xxxxxxx). Alerts are sent
+//                    automatically, staff don't have to do anything.
+//   ALERT_EMAIL    - your email address. Used if ALERT_ENDPOINT is blank or fails: staff get a
+//                    button that opens a ready-written email to you listing their changes.
+//   ALERT_ON_UNCHANGED - true to also be told when someone confirms with NO changes.
+const CONFIG = {
+  "ALERT_ENDPOINT": "https://formspree.io/f/xdeavwpj",
+  "ALERT_EMAIL": "steve.chapman@raven.com.au",
+  "ALERT_ON_UNCHANGED": false
+};
+// ============================================================================================
+
+const STAFF = [
+  {
+    "id": "bibi-venugopal",
+    "FULL_NAME": "Bibi Venugopal",
+    "POSITION": "Regional Manager (SAARC)",
+    "LANDLINE": "+65 6543 6810",
+    "FAX": "+65 6543 6811",
+    "MOBILE": "+91 87545 04448",
+    "EMAIL": "sales.in@ravensealing.com",
+    "COMPANY": "Raven Sealing Products Global (S) Pte Ltd\nRaven Sealing Products (Global) - SAARC Representative Office",
+    "ADDRESS": "Novel Tech Park, 46/4, Hosur Road, Kudlu Gate\nKrisha Reddy Industrial Area, HSR Extention\nBengaluru, Karnataka\nIndia 560068"
+  },
+  {
+    "id": "eddy-lin",
+    "FULL_NAME": "Eddy Lin",
+    "POSITION": "Regional Manager (FAR EAST)",
+    "LANDLINE": "+852 2987 6353",
+    "FAX": "+852 2987 6131",
+    "MOBILE": "+852 9160 6592",
+    "EMAIL": "sales.hk@ravensealing.com",
+    "COMPANY": "Raven Global (HK) Ltd\nRaven Sealing Products (Global)",
+    "ADDRESS": "Room 905, 9/F Metropole Building\n53-63 Peking Road, Tsim Sha Tsui\nKowloon\nHong Kong"
+  },
+  {
+    "id": "mavis-tsoi",
+    "FULL_NAME": "Mavis Tsoi",
+    "POSITION": "Accounting Officer",
+    "LANDLINE": "+852 2987 6575",
+    "FAX": "+852 2987 6131",
+    "MOBILE": "",
+    "EMAIL": "account@ravensealing.com",
+    "COMPANY": "Raven Global (HK) Ltd\nRaven Sealing Products (Global)",
+    "ADDRESS": "Room 905, 9/F Metropole Building\n53-63 Peking Road, Tsim Sha Tsui\nKowloon\nHong Kong"
+  },
+  {
+    "id": "mohammed-khaja",
+    "FULL_NAME": "Mohammed Khaja",
+    "POSITION": "Regional Manager (MIDDLE EAST)",
+    "LANDLINE": "+971 4 328 9417",
+    "FAX": "+971 4 328 9418",
+    "MOBILE": "+971 54 54 54 133",
+    "EMAIL": "sales.me@ravensealing.com",
+    "COMPANY": "Raven Global Middle East LLC\nRaven Sealing Products (Global)",
+    "ADDRESS": "Office # M30, Payless Business Center\nGolf Park Building, M Floor\nAl Garhoud, Dubai\nUnited Arab Emirates"
+  },
+  {
+    "id": "nur-sabrina",
+    "FULL_NAME": "Nur Sabrina",
+    "POSITION": "Assistant Sales Manager (ASEAN)",
+    "LANDLINE": "+65 6543 6810",
+    "FAX": "+65 6543 6811",
+    "MOBILE": "+65 9786 0463",
+    "EMAIL": "sales.sg1@ravensealing.com",
+    "COMPANY": "Raven Sealing Products Global (S) Pte Ltd\nRaven Sealing Products (Global)",
+    "ADDRESS": "2 Tampines North Drive 4 #09-02\nTampines Connection\nSingapore 529434"
+  },
+  {
+    "id": "sabir-ahamed",
+    "FULL_NAME": "Sabir Ahamed",
+    "POSITION": "Director, Business Development",
+    "LANDLINE": "+65 6543 6810",
+    "FAX": "+65 6543 6811",
+    "MOBILE": "+65 9827 8534",
+    "EMAIL": "sabir@ravensealing.com",
+    "COMPANY": "Raven Sealing Products Global (S) Pte Ltd\nRaven Sealing Products (Global)",
+    "ADDRESS": "2 Tampines North Drive 4 #09-02\nTampines Connection\nSingapore 529434"
+  },
+  {
+    "id": "sharon-chau",
+    "FULL_NAME": "Sharon Chau",
+    "POSITION": "Senior Customer Service Executive",
+    "LANDLINE": "+852 2987 6257",
+    "FAX": "+852 2987 6131",
+    "MOBILE": "",
+    "EMAIL": "sharon@ravensealing.com",
+    "COMPANY": "Raven Global (HK) Ltd\nRaven Sealing Products (Global)",
+    "ADDRESS": "Room 905, 9/F Metropole Building\n53-63 Peking Road, Tsim Sha Tsui\nKowloon\nHong Kong"
+  },
+  {
+    "id": "sherry-tsui",
+    "FULL_NAME": "Sherry Tsui",
+    "POSITION": "Financial Controller",
+    "LANDLINE": "+852 2987 6779",
+    "FAX": "+852 2987 6131",
+    "MOBILE": "",
+    "EMAIL": "sherry@ravensealing.com",
+    "COMPANY": "Raven Global (HK) Ltd\nRaven Sealing Products (Global)",
+    "ADDRESS": "Room 905, 9/F Metropole Building\n53-63 Peking Road, Tsim Sha Tsui\nKowloon\nHong Kong"
+  },
+  {
+    "id": "vasa-raven",
+    "FULL_NAME": "Vasa Raven",
+    "POSITION": "Managing Director",
+    "LANDLINE": "+852 2987 6257",
+    "FAX": "+852 2987 6131",
+    "MOBILE": "+61 413 873 676",
+    "EMAIL": "vasa.raven@ravensealing.com",
+    "COMPANY": "Raven Global (HK) Ltd\nRaven Sealing Products (Global)",
+    "ADDRESS": "Room 905, 9/F Metropole Building\n53-63 Peking Road, Tsim Sha Tsui\nKowloon\nHong Kong"
+  }
+];
+const TEMPLATE = "<div style=\"display:inline-block; width:450px; max-width:450px;\">\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"450\" style=\"border-collapse: collapse; mso-line-height-rule: exactly; table-layout: fixed; word-break: break-word;\">\n<tr>\n<td style=\"padding: 0; margin: 0;\">\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse: collapse; mso-line-height-rule: exactly; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt; color: #444444; line-height: 1.2;\">\n    <tr>\n        <td style=\"padding: 0 0 3px 0;\">\n            <strong>{{FULL_NAME}}<\/strong>\n        <\/td>\n    <\/tr>\n    <tr>\n        <td style=\"padding: 0 0 12px 0;\">\n            {{POSITION}}\n        <\/td>\n    <\/tr>\n    <!--OPTIONAL:LANDLINE-->\n    <tr>\n        <td style=\"padding: 0 0 3px 0;\">\n            <strong>T: <\/strong>{{LANDLINE}}\n        <\/td>\n    <\/tr>\n    <!--/OPTIONAL:LANDLINE-->\n    <!--OPTIONAL:FAX-->\n    <tr>\n        <td style=\"padding: 0 0 3px 0;\">\n            <strong>F: <\/strong>{{FAX}}\n        <\/td>\n    <\/tr>\n    <!--/OPTIONAL:FAX-->\n    <!--OPTIONAL:MOBILE-->\n    <tr>\n        <td style=\"padding: 0 0 3px 0;\">\n            <strong>M: <\/strong>{{MOBILE}}\n        <\/td>\n    <\/tr>\n    <!--/OPTIONAL:MOBILE-->\n    <tr>\n        <td style=\"padding: 0 0 3px 0;\">\n            <strong>E: <\/strong><a href=\"mailto:{{EMAIL}}\" style=\"color:#444444; text-decoration:underline;\">{{EMAIL}}<\/a>\n        <\/td>\n    <\/tr>\n<\/table>\n<table width=\"450\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse: collapse; mso-line-height-rule: exactly;\">\n    <tr>\n        <td height=\"15\" style=\"mso-line-height-rule: exactly; line-height: 15px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n    <tr>\n        <td height=\"1\" style=\"border-bottom: 1px solid #999999; mso-line-height-rule: exactly; line-height: 1px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n    <tr>\n        <td height=\"15\" style=\"mso-line-height-rule: exactly; line-height: 15px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n<\/table>\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse: collapse; mso-line-height-rule: exactly;\">\n    <tr>\n        <td>\n            <a href=\"https://www.raven.com.au/\" target=\"_blank\" style=\"color: #444444; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt; text-decoration: none;\"><img src=\"https://cdn.ravengroup.au/raven/public/logo-raven.png\" width=\"120\" height=\"36\" alt=\"Raven Products Pty Ltd\" title=\"Raven Products Pty Ltd\" style=\"display: block; border: 0;\"><\/a>\n        <\/td>\n        \n        <td width=\"25\" style=\"width:25px; font-size:1px; line-height:1px;\">&nbsp;<\/td>\n        \n        <td>\n            <a href=\"https://www.facebook.com/ravenproductsau/\" target=\"_blank\" style=\"color: #444444; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt; text-decoration: none;\"><img src=\"https://cdn.ravengroup.au/raven/public/logo-facebook-72h.png\" width=\"24\" height=\"36\" alt=\"Facebook\" title=\"Facebook\" style=\"display: block; border: 0;\"><\/a>\n        <\/td>\n        \n        <td width=\"10\" style=\"width:10px; font-size:1px; line-height:1px;\">&nbsp;<\/td>\n        \n        <td>\n            <a href=\"https://www.instagram.com/ravenproductsau/\" target=\"_blank\" style=\"color: #444444; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt; text-decoration: none;\"><img src=\"https://cdn.ravengroup.au/raven/public/logo-instagram-72h.png\" width=\"24\" height=\"36\" alt=\"Instagram\" title=\"Instagram\" style=\"display: block; border: 0;\"><\/a>\n        <\/td>\n        \n        <td width=\"10\" style=\"width:10px; font-size:1px; line-height:1px;\">&nbsp;<\/td>\n        \n        <td>\n            <a href=\"https://www.linkedin.com/company/ravenproductsau/\" target=\"_blank\" style=\"color: #444444; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt; text-decoration: none;\"><img src=\"https://cdn.ravengroup.au/raven/public/logo-linkedin-72h.png\" width=\"24\" height=\"36\" alt=\"LinkedIn\" title=\"LinkedIn\" style=\"display: block; border: 0;\"><\/a>\n        <\/td>\n        \n        <td width=\"10\" style=\"width:10px; font-size:1px; line-height:1px;\">&nbsp;<\/td>\n        \n        <td>\n            <a href=\"https://www.youtube.com/@ravenproductsau/\" target=\"_blank\" style=\"color: #444444; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt; text-decoration: none;\"><img src=\"https://cdn.ravengroup.au/raven/public/logo-youtube-72h.png\" width=\"34\" height=\"36\" alt=\"YouTube\" title=\"YouTube\" style=\"display: block; border: 0;\"><\/a>\n        <\/td>\n    <\/tr>\n<\/table>\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse: collapse; mso-line-height-rule: exactly;\">\n    <tr>\n        <td height=\"20\" style=\"mso-line-height-rule: exactly; line-height: 20px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n    <tr>\n        <td style=\"font-family: Aptos, Helvetica, Arial, sans-serif; font-size:11pt; color:#444444;padding: 0 0 3px 0;\">\n            <strong>{{COMPANY}}<\/strong>\n        <\/td>\n    <\/tr>\n    <tr>\n        <td style=\"font-family: Aptos, Helvetica, Arial, sans-serif; font-size:11pt; color:#444444;padding: 0 0 3px 0;\">\n            {{ADDRESS}}\n        <\/td>\n    <\/tr>\n    <tr>\n        <td style=\"font-family: Aptos, Helvetica, Arial, sans-serif; font-size:11pt; color:#444444;\">\n            <a href=\"https://www.raven.com.au/\" style=\"color:#444444; text-decoration:underline;\" title=\"Raven Website\">\n                <strong>raven.com.au<\/strong>\n            <\/a>\n        <\/td>\n    <\/tr>\n<\/table>\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"450\" style=\"border-collapse: collapse; mso-line-height-rule: exactly;\">\n    <tr>\n        <td height=\"20\" style=\"mso-line-height-rule: exactly; line-height: 20px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n    <tr>\n        <td style=\"line-height: 0; font-size: 0;\"><a href=\"https://www.raven.com.au/\" target=\"_blank\" style=\"color: #444444; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt; line-height: 12px; text-decoration: none;\"><img src=\"https://cdn.ravengroup.au/raven/public/BANNERS-GENERIC-RAVEN-ARCHI-V2_260812.gif\" width=\"450\" height=\"138\" alt=\"Raven Products Pty Ltd\" title=\"Raven Products Pty Ltd\" style=\"display: block; border: 0; margin: 0; padding: 0;\"><\/a><\/td>\n    <\/tr>\n    <tr>\n        <td height=\"20\" style=\"mso-line-height-rule: exactly; line-height: 20px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n<\/table>\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse: collapse; mso-line-height-rule: exactly;\">\n    <tr>\n        <td>\n            <a href=\"https://raven.com.au/\" target=\"_blank\" style=\"text-decoration: none;\"><img src=\"https://cdn.ravengroup.au/raven/public/logo-raven-grey.png\" width=\"75\" height=\"28\" alt=\"Raven Products Pty Ltd\" title=\"Raven Products Pty Ltd\" style=\"display: block; border: 0; color: #444444; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt;\"><\/a>\n        <\/td>\n        \n        <td width=\"13\" style=\"width:13px; font-size:1px; line-height:1px;\">&nbsp;<\/td>\n        \n        <td>\n            <a href=\"https://www.dtac.com.au/\" target=\"_blank\" style=\"text-decoration: none;\"><img src=\"https://cdn.ravengroup.au/raven/public/logo-dtac-grey.png\" width=\"56\" height=\"28\" alt=\"DTAC Pty Ltd\" title=\"DTAC Pty Ltd\" style=\"display: block; border: 0; color: #444444; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt;\"><\/a>\n        <\/td>\n        \n        <td width=\"13\" style=\"width:13px; font-size:1px; line-height:1px;\">&nbsp;<\/td>\n        \n        <td>\n            <a href=\"https://inspireproducts.com.au/\" target=\"_blank\" style=\"text-decoration: none;\"><img src=\"https://cdn.ravengroup.au/raven/public/logo-inspire-grey.png\" width=\"72\" height=\"28\" alt=\"Inspire Creative Garden Products\" title=\"Inspire Creative Garden Products\" style=\"display: block; border: 0; color: #444444; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt;\"><\/a>\n        <\/td>\n        \n        <td width=\"13\" style=\"width:13px; font-size:1px; line-height:1px;\">&nbsp;<\/td>\n        \n        <td>\n            <a href=\"https://glidex.com.au/\" target=\"_blank\" style=\"text-decoration: none;\"><img src=\"https://cdn.ravengroup.au/raven/public/logo-glidex-grey.png\" width=\"70\" height=\"28\" alt=\"Glidex Advanced Window Cleaning\" title=\"Glidex Advanced Window Cleaning\" style=\"display: block; border: 0; color: #444444; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt;\"><\/a>\n        <\/td>\n        \n        <td width=\"13\" style=\"width:13px; font-size:1px; line-height:1px;\">&nbsp;<\/td>\n        \n        <td>\n            <a href=\"https://www.cavitysliders.com/au/\" target=\"_blank\" style=\"text-decoration: none;\"><img src=\"https://cdn.ravengroup.au/raven/public/logo-cavity-sliders-grey.png\" width=\"115\" height=\"28\" alt=\"Cavity Sliders\" title=\"Cavity Sliders\" style=\"display: block; border: 0; color: #444444; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 11pt;\"><\/a>\n        <\/td>\n    <\/tr>\n<\/table>\n<table width=\"450\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse: collapse; mso-line-height-rule: exactly;\">\n    <tr>\n        <td height=\"15\" style=\"mso-line-height-rule: exactly; line-height: 15px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n    <tr>\n        <td height=\"1\" style=\"border-bottom: 1px solid #999999; mso-line-height-rule: exactly; line-height: 1px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n    <tr>\n        <td height=\"15\" style=\"mso-line-height-rule: exactly; line-height: 15px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n<\/table>\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse: collapse; mso-line-height-rule: exactly;\">\n    <tr>\n        <td style=\"padding: 0 0 10px 0; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 8pt; color: #999999; line-height: 1;\">\n            <p style=\"font-size: 8pt; font-family: Aptos, Helvetica, Arial, sans-serif; margin:0; padding:0;\">\n                <strong>Confidentiality:<\/strong> The contents of this email are confidential and intended for the named recipient only. If you have received this email in error and are not the intended recipient, any use, reproduction, disclosure or distribution of this information is prohibited. All information or opinions expressed by the author are not necessarily those held by Raven Products Pty. Ltd.\n            <\/p>\n        <\/td>\n    <\/tr>\n    <tr>\n        <td style=\"padding: 0; font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 8pt; color: #999999; line-height: 1;\">\n            <p style=\"font-size: 8pt; font-family: Aptos, Helvetica, Arial, sans-serif; margin:0; padding:0;\">\n                <strong>Disclaimer:<\/strong> All technical data and recommendations, although based on our research and believed to be reliable, are given in good faith but without warranty. It is understood that users will independently determine the suitability of this content for their individual purposes.\n            <\/p>\n        <\/td>\n    <\/tr>\n<\/table>\n<table width=\"450\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse: collapse; mso-line-height-rule: exactly;\">\n    <tr>\n        <td height=\"15\" style=\"mso-line-height-rule: exactly; line-height: 15px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n    <tr>\n        <td height=\"1\" style=\"border-bottom: 1px solid #999999; mso-line-height-rule: exactly; line-height: 1px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n    <tr>\n        <td height=\"15\" style=\"mso-line-height-rule: exactly; line-height: 15px; font-size: 1px;\">&#8203;<\/td>\n    <\/tr>\n<\/table>\n<\/td>\n<\/tr>\n<\/table>\n<\/div>";
+const FIELDS = [
+  { key: 'FULL_NAME', label: 'Full name',     required: true  },
+  { key: 'POSITION',  label: 'Position',      required: true  },
+  { key: 'LANDLINE',  label: 'Landline phone', required: false },
+  { key: 'FAX',       label: 'Fax number',    required: false },
+  { key: 'MOBILE',    label: 'Mobile phone',  required: false },
+  { key: 'EMAIL',     label: 'Email address', required: true  },
+  { key: 'COMPANY',   label: 'Company name',  required: true  },
+  { key: 'ADDRESS',   label: 'Address',       required: true  }
+];
+const OTHER = '__other';
+const SAMPLE = { FULL_NAME: 'Your Name', POSITION: 'Your Position', EMAIL: 'your.name@company.com',
+                 COMPANY: 'Company Name', ADDRESS: 'Street address\nCity\nCountry' };
+
+// Phone signature: short and simple, because phone apps strip images and most formatting
+function buildPhone(v) {
+  const L = s => norm(s).split('\n').filter(Boolean).map(esc).join('<br>');
+  const a = 'color:#444444; text-decoration:underline;';
+  const nums = [['T', v.LANDLINE], ['M', v.MOBILE]].filter(n => norm(n[1]))
+    .map(n => `<strong>${n[0]}:</strong> ${esc(norm(n[1]))}`);
+  if (norm(v.EMAIL)) nums.push(`<strong>E:</strong> <a href="mailto:${esc(norm(v.EMAIL))}" style="${a}">${esc(norm(v.EMAIL))}</a>`);
+  return `<div style="font-family: Aptos, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.4; color: #444444;">` +
+    `<strong>${L(v.FULL_NAME)}</strong><br>${L(v.POSITION)}<br><br>` +
+    nums.join('<br>') + '<br><br>' +
+    `<strong>${L(v.COMPANY)}</strong><br>${L(v.ADDRESS)}<br>` +
+    `<a href="https://www.raven.com.au/" style="${a}"><strong>raven.com.au</strong></a></div>`;
+}
+function phoneText(v) {
+  const nums = [['T', v.LANDLINE], ['M', v.MOBILE], ['E', v.EMAIL]].filter(n => norm(n[1])).map(n => `${n[0]}: ${norm(n[1])}`);
+  return [norm(v.FULL_NAME), norm(v.POSITION), '', ...nums, '', norm(v.COMPANY), norm(v.ADDRESS), 'raven.com.au'].join('\n');
+}
+
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+const norm = s => String(s || '').split(/\r?\n/).map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean).join('\n');
+const emailOk = v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+const values = () => Object.fromEntries(FIELDS.map(f => [f.key, $(f.key).value.trim()]));
+
+let record = null;          // the selected person's details from our records ({} for "someone else")
+let lastAlertKey = null;    // stops the same changes being reported twice
+
+function build(v) {
+  let html = TEMPLATE;
+  for (const f of FIELDS) {
+    const val = v[f.key] || '';
+    if (!f.required) {
+      const block = new RegExp('[ \\t]*<!--OPTIONAL:' + f.key + '-->[\\s\\S]*?<!--/OPTIONAL:' + f.key + '-->\\r?\\n?', 'g');
+      html = val ? html.replace(new RegExp('[ \\t]*<!--/?OPTIONAL:' + f.key + '-->\\r?\\n?', 'g'), '') : html.replace(block, '');
+    }
+    const lines = val.split(/\r?\n/).map(l => esc(l.trim())).filter(Boolean);
+    html = html.split('{{' + f.key + '}}').join(lines.join('<br>'));
+  }
+  return html;
+}
+
+function plainText(el) {
+  return el.innerText.split('\n').map(l => l.replace(/[\u200B\uFEFF]/g, '').replace(/[ \t\u00A0]+/g, ' ').trim())
+    .filter(Boolean).join('\n');
+}
+
+function diff() {
+  if (!record) return [];
+  const v = values();
+  return FIELDS.filter(f => norm(v[f.key]) !== norm(record[f.key]))
+               .map(f => ({ field: f.label, was: norm(record[f.key]), now: norm(v[f.key]) }));
+}
+
+// ---- Staff picker -----------------------------------------------------------------------------
+const who = $('who');
+who.innerHTML = '<option value="">Select your name\u2026</option>' +
+  STAFF.map(s => `<option value="${esc(s.id)}">${esc(s.FULL_NAME)}</option>`).join('') +
+  `<option value="${OTHER}">Someone else (not listed)</option>`;
+
+function selectStaff(id) {
+  who.value = id || '';
+  record = id === OTHER ? {} : (STAFF.find(s => s.id === id) || null);
+  for (const f of FIELDS) $(f.key).value = record ? (record[f.key] || '') : '';
+  lastAlertKey = null;
+  const greet = $('greet');
+  if (record && id !== OTHER) {
+    greet.textContent = `Hi ${record.FULL_NAME.split(' ')[0]}, here's your signature with the details we have on record. ` +
+                        `If anything is wrong, click Edit details.`;
+    greet.hidden = false;
+    $('editPanel').hidden = true;
+  } else if (id === OTHER) {
+    greet.textContent = 'Enter your details below. IT will be told so they can add you to the records.';
+    greet.hidden = false;
+    $('editPanel').hidden = false;
+  } else {
+    greet.hidden = true;
+    $('editPanel').hidden = true;
+  }
+  try {
+    const u = new URL(location.href);
+    (id && id !== OTHER) ? u.searchParams.set('staff', id) : u.searchParams.delete('staff');
+    history.replaceState(null, '', u);
+  } catch (e) {}
+  $('checked').checked = false;
+  update();
+}
+who.addEventListener('change', () => selectStaff(who.value));
+
+// ---- Preview, highlights and buttons ----------------------------------------------------------
+const sig = $('sig'), checked = $('checked'), btnHtml = $('copyHtml'), btnText = $('copyText'), status = $('status');
+let mode = 'desktop';     // 'desktop' or 'phone'
+let shownValues = {};
+
+function update() {
+  const v = values();
+  const shown = { ...v };
+  if (!record) Object.assign(shown, SAMPLE);
+  else for (const k in SAMPLE) if (!shown[k] && FIELDS.find(f => f.key === k).required) shown[k] = SAMPLE[k];
+  shownValues = shown;
+  sig.innerHTML = mode === 'phone' ? buildPhone(shown) : build(shown);
+
+  // Highlight changed fields and show the original value
+  const isOther = who.value === OTHER;
+  for (const f of FIELDS) {
+    const el = $(f.key), was = $('was-' + f.key);
+    const changed = !!record && !isOther && norm(v[f.key]) !== norm(record[f.key]);
+    el.classList.toggle('changed', changed);
+    was.hidden = !changed;
+    if (changed) was.textContent = 'Our records: ' + (norm(record[f.key]) || '(blank)');
+  }
+  $('EMAIL').classList.toggle('invalid', !!v.EMAIL && !emailOk(v.EMAIL));
+
+  const ch = isOther ? [] : diff();
+  const box = $('changes');
+  if (ch.length) {
+    box.innerHTML = '<b>You\u2019ve changed ' + ch.length + ' detail' + (ch.length > 1 ? 's' : '') + ':</b><ul>' +
+      ch.map(c => `<li>${esc(c.field)}: <s>${esc(c.was || '(blank)').replace(/\n/g, ', ')}</s> \u2192 ${esc(c.now || '(blank)').replace(/\n/g, ', ')}</li>`).join('') +
+      '</ul>' + (CONFIG.ALERT_ENDPOINT || CONFIG.ALERT_EMAIL ? 'IT will be told about these changes when you copy your signature.' : '');
+    box.hidden = false;
+  } else box.hidden = true;
+
+  const ready = !!record && FIELDS.every(f => !f.required || v[f.key]) && emailOk(v.EMAIL) && checked.checked;
+  btnHtml.disabled = btnText.disabled = !ready;
+  $('editBtn').disabled = !record;
+  status.textContent = ''; status.className = 'status';
+}
+
+function say(msg, ok) { status.textContent = msg; status.className = 'status ' + (ok ? 'ok' : 'err'); }
+
+// ---- Alerts -----------------------------------------------------------------------------------
+function alertMessage(ch, v) {
+  const isOther = who.value === OTHER;
+  const name = isOther ? v.FULL_NAME : record.FULL_NAME;
+  const subject = isOther ? `New email signature created: ${v.FULL_NAME}`
+                : ch.length ? `Email signature details changed: ${name}` : `Email signature confirmed (no changes): ${name}`;
+  let body = isOther ? `${v.FULL_NAME} is not in the staff list and created a signature with these details:\n\n` +
+                       FIELDS.map(f => `${f.label}: ${norm(v[f.key]).replace(/\n/g, ', ') || '(blank)'}`).join('\n')
+           : ch.length ? `${name} (${record.EMAIL}) changed these details in their email signature:\n\n` +
+                         ch.map(c => `${c.field}\n  Our records: ${(c.was || '(blank)').replace(/\n/g, ', ')}\n  Changed to:  ${(c.now || '(blank)').replace(/\n/g, ', ')}`).join('\n\n')
+           : `${name} (${record.EMAIL}) checked their email signature and made no changes.`;
+  body += `\n\nSource: Signature Builder (web, ${mode === 'phone' ? 'phone' : 'computer'} signature)\nTime: ${new Date().toString()}`;
+  return { subject, body, name };
+}
+
+async function sendAlert() {
+  if (!record) return;
+  const isOther = who.value === OTHER;
+  const v = values(), ch = isOther ? [] : diff();
+  if (!isOther && !ch.length && !CONFIG.ALERT_ON_UNCHANGED) return;
+  const key = JSON.stringify([who.value, v, ch.length]);
+  if (key === lastAlertKey) return;
+  const m = alertMessage(ch, v);
+
+  if (CONFIG.ALERT_ENDPOINT) {
+    try {
+      const r = await fetch(CONFIG.ALERT_ENDPOINT, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ _subject: m.subject, subject: m.subject, staff: m.name, message: m.body })
+      });
+      if (r.ok) { lastAlertKey = key; if (ch.length || isOther) noteChanges('IT has been told about your changes so our records can be updated.'); return; }
+    } catch (e) { /* fall back to email */ }
+  }
+  if (CONFIG.ALERT_EMAIL && (ch.length || isOther)) {
+    const href = `mailto:${CONFIG.ALERT_EMAIL}?subject=${encodeURIComponent(m.subject)}&body=${encodeURIComponent(m.body)}`;
+    noteChanges('Please let IT know about your changes: <a class="mail" href="' + esc(href) + '">Email my changes to IT</a> (opens a ready-written email, just click Send).');
+    lastAlertKey = key;
+  }
+}
+
+function noteChanges(html) {
+  const box = $('changes');
+  box.innerHTML = box.innerHTML.replace(/IT will be told[^<]*$/, '') + '<div style="margin-top:8px"><b>' + html + '</b></div>';
+  box.hidden = false;
+}
+
+// ---- Copy -------------------------------------------------------------------------------------
+const currentText = () => mode === 'phone' ? phoneText(shownValues) : plainText(sig);
+
+async function copyRich() {
+  const html = sig.innerHTML, text = currentText();
+  try {
+    if (navigator.clipboard && window.ClipboardItem) {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([text], { type: 'text/plain' })
+      })]);
+      return true;
+    }
+  } catch (e) { /* fall through to selection copy */ }
+  const range = document.createRange(); range.selectNodeContents(sig);
+  const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+  let ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+  sel.removeAllRanges();
+  return ok;
+}
+
+btnHtml.addEventListener('click', async () => {
+  (await copyRich()) ? say(mode === 'phone' ? 'Signature copied. Now paste it into your email app (steps below).'
+                                            : 'Signature copied. Now paste it into Outlook (steps below).', true)
+                     : say(mode === 'phone' ? 'Couldn\u2019t copy automatically. Try Copy as plain text.'
+                                            : 'Couldn\u2019t copy automatically. Select the preview with your mouse and copy it (Ctrl+C / \u2318C).', false);
+  sendAlert();
+});
+btnText.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(currentText()); say('Plain text copied. Now paste it into your email app (steps below).', true); }
+  catch (e) { say('Couldn\u2019t copy automatically. Select the preview text and copy it.', false); }
+  sendAlert();
+});
+
+$('editBtn').addEventListener('click', () => {
+  $('editPanel').hidden = false;
+  $('editPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  $('FULL_NAME').focus({ preventScroll: true });
+});
+$('resetBtn').addEventListener('click', () => {
+  if (!record) return;
+  for (const f of FIELDS) $(f.key).value = record[f.key] || '';
+  checked.checked = false; update();
+});
+
+// Any edit means they need to re-confirm
+$('f').addEventListener('input', () => { checked.checked = false; lastAlertKey = null; update(); });
+checked.addEventListener('change', update);
+
+// ---- Paste-instruction tabs ---------------------------------------------------------------------
+const tabs = [...document.querySelectorAll('#tabs button')];
+function showTab(t) {
+  tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.t === t)));
+  document.querySelectorAll('[data-p]').forEach(p => p.hidden = p.dataset.p !== t);
+}
+tabs.forEach(b => b.addEventListener('click', () => showTab(b.dataset.t)));
+
+// ---- Computer / Phone switch ---------------------------------------------------------------------
+const UA = navigator.userAgent;
+const isAndroid = /Android/i.test(UA);
+const isPhone = /iPhone|iPod|Android.+Mobile|Mobile/i.test(UA) || (window.matchMedia && matchMedia('(max-width: 640px)').matches);
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.m === m)));
+  $('sigPanel').classList.toggle('phone', m === 'phone');
+  tabs.forEach(b => b.hidden = b.dataset.g !== m);
+  $('pasteTitle').textContent = m === 'phone' ? 'Paste it into your phone' : 'Paste it into Outlook';
+  $('modenote').textContent = m === 'phone'
+    ? 'A shorter signature for your phone. Phone email apps remove images and most formatting, so this version is text only.'
+    : 'The full signature for Outlook on your computer or the web.';
+  showTab(m === 'phone' ? (isAndroid ? 'p-outlook-android' : 'p-outlook-ios') : 'new');
+  update();
+}
+document.querySelectorAll('.mode button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.m)));
+mode = isPhone ? 'phone' : 'desktop';
+
+// ---- Start: personal link (?staff=sherry-tsui) picks the person ---------------------------------
+let start = '';
+try { start = new URLSearchParams(location.search).get('staff') || ''; } catch (e) {}
+selectStaff(STAFF.some(s => s.id === start) ? start : '');
+setMode(mode);
+</script>
+</body>
+</html>
