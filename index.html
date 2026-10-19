@@ -188,7 +188,7 @@
       <li>Close the editor, then choose it as the default for new messages and replies under <b>Choose default signature</b>.</li>
     </ol></div>
     <div data-p="classic" hidden><ol>
-      <li><b>Easiest:</b> run the <b>Install Signature</b> installer from IT. It installs and sets your default automatically.</li>
+      <li><b>Easiest:</b> run the <b>Install Signature</b> installer. It installs and sets your default automatically.</li>
       <li>Or manually: click <b>Copy signature</b>, then in Outlook go to <b>File</b> &gt; <b>Options</b> &gt; <b>Mail</b> &gt; <b>Signatures</b>.</li>
       <li>Click <b>New</b>, name it <b>Raven Signature</b>, paste into the box (<b>Ctrl+V</b>), choose it for new messages and replies/forwards, then <b>OK</b>.</li>
     </ol></div>
@@ -399,7 +399,7 @@ function selectStaff(id) {
     greet.hidden = false;
     $('editPanel').hidden = true;
   } else if (id === OTHER) {
-    greet.textContent = 'Enter your details below. IT will be told so they can add you to the records.';
+    greet.textContent = 'Enter your details below. We will be told so we can add you to our records.';
     greet.hidden = false;
     $('editPanel').hidden = false;
   } else {
@@ -445,7 +445,7 @@ function update() {
   if (ch.length) {
     box.innerHTML = '<b>You\u2019ve changed ' + ch.length + ' detail' + (ch.length > 1 ? 's' : '') + ':</b><ul>' +
       ch.map(c => `<li>${esc(c.field)}: <s>${esc(c.was || '(blank)').replace(/\n/g, ', ')}</s> \u2192 ${esc(c.now || '(blank)').replace(/\n/g, ', ')}</li>`).join('') +
-      '</ul>' + (CONFIG.ALERT_ENDPOINT || CONFIG.ALERT_EMAIL ? 'IT will be told about these changes when you copy your signature.' : '');
+      '</ul>' + (CONFIG.ALERT_ENDPOINT || CONFIG.ALERT_EMAIL ? 'We will be told about these changes when you copy your signature.' : '');
     box.hidden = false;
   } else box.hidden = true;
 
@@ -487,19 +487,19 @@ async function sendAlert() {
         method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ _subject: m.subject, subject: m.subject, staff: m.name, message: m.body })
       });
-      if (r.ok) { lastAlertKey = key; if (ch.length || isOther) noteChanges('IT has been told about your changes so our records can be updated.'); return; }
+      if (r.ok) { lastAlertKey = key; if (ch.length || isOther) noteChanges('We have been told about your changes so our records can be updated.'); return; }
     } catch (e) { /* fall back to email */ }
   }
   if (CONFIG.ALERT_EMAIL && (ch.length || isOther)) {
     const href = `mailto:${CONFIG.ALERT_EMAIL}?subject=${encodeURIComponent(m.subject)}&body=${encodeURIComponent(m.body)}`;
-    noteChanges('Please let IT know about your changes: <a class="mail" href="' + esc(href) + '">Email my changes to IT</a> (opens a ready-written email, just click Send).');
+    noteChanges('Please let us know about your changes: <a class="mail" href="' + esc(href) + '">Email my changes to us</a> (opens a ready-written email, just click Send).');
     lastAlertKey = key;
   }
 }
 
 function noteChanges(html) {
   const box = $('changes');
-  box.innerHTML = box.innerHTML.replace(/IT will be told[^<]*$/, '') + '<div style="margin-top:8px"><b>' + html + '</b></div>';
+  box.innerHTML = box.innerHTML.replace(/We will be told[^<]*$/, '') + '<div style="margin-top:8px"><b>' + html + '</b></div>';
   box.hidden = false;
 }
 
