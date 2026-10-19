@@ -206,8 +206,9 @@
 //                    button that opens a ready-written email to you listing their changes.
 //   ALERT_ON_UNCHANGED - true to also be told when someone confirms with NO changes.
 const CONFIG = {
-  "ALERT_ENDPOINT": "https://formspree.io/f/xdeavwpj",
+  "ALERT_ENDPOINT": "https://script.google.com/macros/s/AKfycbytVbdxyN_k-OTyIKjhpSsSiaXjNoJIXC2MMqjj_kbuqqlspYs53PZJHWSXnu6dm-DO/exec",
   "ALERT_EMAIL": "steve.chapman@raven.com.au",
+  "ALERT_TOKEN": "raven-signatures-2026",
   "ALERT_ON_UNCHANGED": false
 };
 // ============================================================================================
@@ -483,11 +484,24 @@ async function sendAlert() {
 
   if (CONFIG.ALERT_ENDPOINT) {
     try {
-      const r = await fetch(CONFIG.ALERT_ENDPOINT, {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ _subject: m.subject, subject: m.subject, staff: m.name, message: m.body })
-      });
-      if (r.ok) { lastAlertKey = key; if (ch.length || isOther) noteChanges('We have been told about your changes so our records can be updated.'); return; }
+      let ok = false;
+      if (/script\.google\.com/.test(CONFIG.ALERT_ENDPOINT)) {
+        // Google Sheet change log (Apps Script). Sent as plain text so the browser allows it.
+        const changes = isOther ? FIELDS.map(f => ({ field: f.label, was: '', now: norm(v[f.key]) })) : ch;
+        const r = await fetch(CONFIG.ALERT_ENDPOINT, { method: 'POST', body: JSON.stringify({
+          token: CONFIG.ALERT_TOKEN, type: isOther ? 'New staff' : ch.length ? 'Changed' : 'Confirmed',
+          staff: m.name, staffEmail: isOther ? norm(v.EMAIL) : record.EMAIL,
+          source: `Signature Builder (web, ${mode === 'phone' ? 'phone' : 'computer'} signature)`,
+          subject: m.subject, message: m.body, changes }) });
+        ok = r.ok && (await r.json().catch(() => ({}))).ok === true;
+      } else {
+        const r = await fetch(CONFIG.ALERT_ENDPOINT, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ _subject: m.subject, subject: m.subject, staff: m.name, message: m.body })
+        });
+        ok = r.ok;
+      }
+      if (ok) { lastAlertKey = key; if (ch.length || isOther) noteChanges('We have been told about your changes so our records can be updated.'); return; }
     } catch (e) { /* fall back to email */ }
   }
   if (CONFIG.ALERT_EMAIL && (ch.length || isOther)) {
