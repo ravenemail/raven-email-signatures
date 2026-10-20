@@ -4,111 +4,161 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Email Signature Builder</title>
+<title>Raven Email Signature Builder</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1MDAgNTAwIj4gPGRlZnM+IDxzdHlsZT4gLnN0MCwgLnN0MSB7IGZpbGw6ICNmZmY7IH0gLnN0MSB7IGZpbGwtcnVsZTogZXZlbm9kZDsgfSAuc3QyIHsgZmlsbDogI2MwMjc0MTsgfSA8L3N0eWxlPiA8L2RlZnM+IDxjaXJjbGUgY2xhc3M9InN0MiIgY3g9IjI1MCIgY3k9IjI1MCIgcj0iMjUwIi8+IDxnPiA8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzExLjU5LDExMy45YzAtNC40NywzLjU5LTguMDgsOC4wMi04LjA4czguMDEsMy42MSw4LjAxLDguMDgtMy41OSw4LjA4LTguMDEsOC4wOC04LjAyLTMuNjItOC4wMi04LjA4aDBaIi8+IDxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iNDA4Ljg1IDg2LjU0IDM1MS43OSA4Ni41NCAzNTEuNzkgMTA1LjY5IDQwOC44NSA4Ni41NCA0MDguODUgODYuNTQgNDA4Ljg1IDg2LjU0Ii8+IDxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMzUyLjE3IDExNC45IDM1Mi4xNyAxMzguMzMgNDA3LjM2IDk3LjI1IDM1Mi4xNyAxMTQuOSAzNTIuMTcgMTE0LjkgMzUyLjE3IDExNC45Ii8+IDxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMTY2LjQ5IDI4MC40NiA3NS4xNSA0MTMuNDYgMTc0Ljg4IDQxMy40NiAyMDEuNjggMjgwLjQ2IDE2Ni40OSAyODAuNDYgMTY2LjQ5IDI4MC40NiAxNjYuNDkgMjgwLjQ2Ii8+IDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yNjguMTQsMTMzLjUxbC05Ni4yNSwxMzYuNzdoNDAuNTRjNDMuOTEsMCw3OS42MS0zNS41OSw3OS42MS03OS44MiwwLTIyLjQ0LTkuMTQtNDIuNDItMjMuOS01Ni45NWgwWiIvPiA8cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjM0MC40IDM0Mi42NCAzMjUuOTcgMzU3LjQzIDM0NC40NSAzNTcuMzggMzQ0LjQ4IDM2Ny4wMSAzMjcuMSAzNjcuMDUgMzQxLjE5IDM4MS45MiAzMzQuMjcgMzg4LjU3IDI0OC43OSAyOTguNTEgMjYyLjE1IDI5OC40OSAzMTUuMzIgMzU0LjYyIDMzMy41NyAzMzUuODkgMzQwLjQgMzQyLjY0IDM0MC40IDM0Mi42NCAzNDAuNCAzNDIuNjQiLz4gPHBvbHlnb24gY2xhc3M9InN0MCIgcG9pbnRzPSIyNDcuMzMgMzQyLjMxIDIzMi44NCAzNTcuMiAyNTIuNjkgMzU3LjIgMjUyLjY5IDM2Ni44MiAyMzMuMzYgMzY2LjgyIDI0Ny40MiAzODEuNDYgMjQwLjU1IDM4OC4xNyAyMTQuMjggMzYwLjgxIDIxNC4yOCAyOTguNTUgMjIzLjg0IDI5OC41NSAyMjMuODQgMzUyLjY4IDI0MC41MSAzMzUuNTkgMjQ3LjMzIDM0Mi4zMSAyNDcuMzMgMzQyLjMxIDI0Ny4zMyAzNDIuMzEiLz4gPHBhdGggY2xhc3M9InN0MSIgZD0iTTI5OS4wMiwxMTMuNzdjMC05LjAzLDcuMjctMTYuMzYsMTYuMjUtMTYuMzZzMTYuMjUsNy4zMywxNi4yNSwxNi4zNi03LjI3LDE2LjM2LTE2LjI1LDE2LjM2LTE2LjI1LTcuMzItMTYuMjUtMTYuMzZoMFpNMjkyLjI3LDk5LjQ0YzEwLjMyLTE0Ljc2LDIzLjU5LTEyLjQ0LDIzLjU5LTEyLjQ0aDI1LjhjMCw2Ljg1LjE5LDYwLjM4LjE5LDExMS4yNywwLDY2LjcyLTQ5LjgyLDg5LjcyLTkwLjIzLDg5LjcyaC0zOC43OHYtNy4zNmM0OS4zMi0uMTcsODkuMjMtNDAuNDcsODkuMjMtOTAuMTcsMC0yNS40OS0xMC40OS00OC41LTI3LjM4LTY0LjksMi4yOC0zLjUyLDkuMTgtMTQuMDksMTcuNTgtMjYuMTJoMFoiLz4gPC9nPiA8L3N2Zz4=">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAFI0lEQVRYha2XaUxUVxTHf/e+YZkBARVF7bAKgkjdsMSlRUcSW0vSWBPTWiOxtbVJW9M00arRki5WpdbGNGm6JK3pB9tak7aJ2sYEBXEj8QOKTnBQASsKgkSWGWSYmXf7ARhAlnlD/X96595zzv9/77vLuQKDKE9dGdVlcuejWA76HBBJQExvdyuoOoS4rHR1OkR4TjzrON9hJK8I5HA2I2+GT+nbgFcBi0G9nQp+ldJXtLSq7MaYBFywLjK7LebPhFDvAyaDxI/DAxxUblVoqyvtMizgzMzcNKVrfwBZYyQeDEW51Lyrc6vONgQUcCY1d57StJPApCdC3o96iczPdZyqHFFA78jPj5V8/OJsItKn4+t8hKu6hugFs0HXaa+w01ZhB6XqlUk9Y7OXNvbFyL6PkqRl4UrXjo6VPG7VCibmLUF5PVjXryZscizK48V9/wFoEpQCsEqvOH7Busg8RAChcjcwZyzkYVMnk7pzM03Hihk3awbu5hYQYH19DZo5nLZL/bOuILs7Mnx7ny3Av9XsjGG1C5OJqLmZZB4sRPl03I3NhE6M4da+b3l0+y6uG7XDhTmVSaXZ7KWNEqB3n49pqyW+s570PR9S++UPhMXFEjVnJgjBg+JzI5EDRAqvKASQ5akro+g5ZIJG9PwsEt5ehzlhGkpKPA/bggkvOJe+ZJzsMrnzMX7C+aFFWsj4YgdC61lGMfOzcF6/FUyKCJ8KeVH2nO3BI3Xne4Rbp/ptaQ5Hd7uDyqEQy2XPxRIcJj2/lCkvvzCorfNmHeaEpwDwtLYbTTVbgkgOhjwsLpa0Tz4Y1KZ3e+i4Vo0lJQEAl6PGWDJBigSiDLMLQfrebYTEDA6p2f898Rtf8dv3/zxpNGO0DOzTD2vBasYvzvbb7oYmqrbuITIzlZiF8wC4e/gvWi9dMZxTlKbbmoHYgI4hJsYvykaGmNA9HoSmERoXS/yGNZiTrHjbOrj93WHqfz4KujLK32QCVQtidAFCkPXNbibk5tBx1UHV1s+JyZkLuuLOT0d49O892ivs6O5uo8Q9UNRIhLgcyG/a2peYkJsDQMc1B2GTJuJuaKLh9+OY46fhc3UGTw4owRWpdHV6NKfw+KmkbNnktzvs1UhzGJo5HIDarw9h3bCGyMy0oAUIxClJCMcB17AeUpCxdzuaxX974rRX90YLYhbOQ3m8OHbuJ2HTa5gTrQhNEp39tBF+lzLp/0ibvdSp4LfhPBLeXEv0gv5kursb1406AJI2b8CSHI8IMaF3uXHs2k/KlrfIKNqBZXoCiAD1ruAXm73UKQGk9BXRU0D6EZGaROK7BYNinNdvobxe2q9UoXw+LMnxmCIjAPA5O6n+6AARM5KxpCQiNG00+m5N1/ZBb0HSWzof7OuVoSHMPLALGRY6WMA1BwDetg4q39hKV0PToBvQ09pO5cZtdDe3oLzekQcv1FfPVRfX+AUAKLcqRFEOPdMbkZ4yJLCj7/8D3S0PqT90dOjQmlu48+ORUQavLrq85o/9YgZ2lcxaNkVqYZes61ZZGWYKm44V425sHiV5QNzzKZGTV3367rACAMrS82br6CcA6/9hGgZ3hPDlL71ednVg45C7INdxqlL6vPMRlD05bnVRmVTO4+TDCgDIvXm2udMbvgLBp4x0RhhDN4q9nT6zbeBbYCACPk5LZi2b0ltAFgARBoldKA5raEV9q30kBBQwQEik9JCvC2GTgrlKkcyA57kQ1KJUBYgS3aT+ttlLnUby/geB6eNtyRQLGwAAAABJRU5ErkJggg==">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
 <style>
   :root {
-    --bg: #f4f4f2; --panel: #ffffff; --text: #222222; --muted: #6b6b6b; --line: #dddddb;
-    --accent: #1f1f1f; --accent-text: #ffffff; --ok: #2e7d4f; --warn: #b3261e; --field: #ffffff;
-    --changed: #fff6d6; --changed-line: #d9a400;
+    --bg: #ffffff; --band: #f4f4f2; --text: #1f1f1f; --muted: #6b6b6b; --line: #d9d9d6; --ink: #000000;
+    --red: #c02640; --red-dark: #a01f35; --ok: #2e7d4f; --warn: #b3261e;
+    --changed: #fdf6dc; --changed-line: #e4d6ae;
   }
   * { box-sizing: border-box; }
+  html { background: var(--bg); }
   body { margin: 0; background: var(--bg); color: var(--text);
          font: 15px/1.5 Aptos, "Segoe UI", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; }
   input, textarea, button, select { font-family: inherit; }
-  .wrap { max-width: 1132px; margin: 0 auto; padding: 32px 16px 64px; }
-  .layout { display: grid; grid-template-columns: minmax(0, 540px) minmax(0, 540px); gap: 0 20px; align-items: start; justify-content: start; }
-  .layout > div { min-width: 0; }
-  @media (max-width: 1000px) { .wrap { max-width: 640px; } .layout { grid-template-columns: minmax(0, 1fr); } }
-  .logo { display: block; width: 160px; height: auto; margin: 0 0 18px; fill: #000000; }
-  h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.01em; }
-  .sub { color: var(--muted); margin: 0 0 24px; }
-  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
-  .panel h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 14px; }
-  .who { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
-  .who label { font-weight: 600; margin: 0; }
-  .who select { min-width: 240px; flex: 1 1 240px; }
-  .greet { margin: 14px 0 0; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
+
+  /* Header band */
+  .top { background: var(--band); padding: 28px 0 26px; }
+  .logo { display: block; width: 176px; height: auto; margin: 0 0 18px; fill: #000000; }
+  h1 { font-size: 27px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0; }
+
+  /* Grid of step boxes */
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 34px 76px; padding: 30px 0 64px;
+          grid-template-areas: "s1 s2" "form prev" "copy paste"; }
+  .a-s1 { grid-area: s1; } .a-s2 { grid-area: s2; } .a-form { grid-area: form; }
+  .a-prev { grid-area: prev; } .a-copy { grid-area: copy; } .a-paste { grid-area: paste; }
+  @media (max-width: 1000px) {
+    .wrap { max-width: 640px; }
+    .grid { grid-template-columns: minmax(0, 1fr); gap: 22px; grid-template-areas: "s1" "s2" "prev" "form" "copy" "paste"; }
+  }
+  .box { border: 2px solid var(--ink); border-radius: 10px; padding: 20px 20px 22px; min-width: 0; background: #fff; }
+
+  /* Numbered step headings */
+  .step { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; }
+  .num { flex: 0 0 auto; width: 62px; height: 62px; border: 2.5px solid var(--ink); border-radius: 50%;
+         display: grid; place-items: center; font-size: 34px; font-weight: 600; line-height: 1; }
+  .step h2, h2.big { margin: 0; font-weight: 600; text-transform: uppercase; letter-spacing: .005em; line-height: 1.2; }
+  .step h2 { font-size: 23px; }
+  .a-prev { padding-top: 0; }
+  h2.big { font-size: clamp(24px, 2.5vw, 33px); white-space: nowrap; text-align: center; line-height: 1;
+           padding: 28px 0 26px; text-box: trim-both cap alphabetic; }
+  @supports (text-box: trim-both cap alphabetic) { h2.big { padding: 30px 0; } }
+  @media (max-width: 1000px) { h2.big { font-size: clamp(20px, 5.4vw, 33px); } }
+  .rule { border: 0; border-top: 2px solid var(--ink); margin: 0 0 20px; }
+  .box > .step + .rule { margin-top: -4px; }
+  @media (max-width: 640px) {
+    .num { width: 48px; height: 48px; font-size: 26px; } .step h2 { font-size: 18px; } h2.big { padding: 21px 0 19px; }
+  }
+  @media (max-width: 640px) and (min-width: 0px) { @supports (text-box: trim-both cap alphabetic) { h2.big { padding: 20px 0; } }
+  }
+
+  /* Step 1 */
+  .who { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+  .who label { font-weight: 600; margin: 0; font-size: 14px; }
+  .who select { flex: 1 1 220px; width: auto; border: 2px solid var(--ink); border-radius: 10px; padding: 9px 12px; }
+  .greet { margin: 12px 0 0; font-size: 14px; }
+  .a-s1 { display: flex; flex-direction: column; padding-bottom: 0; }
+  .a-s1 .step { margin-bottom: 0; }
+  .a-s1 .center { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 20px 0; }
+
+  /* Step 2: Computer / Phone */
+  .mode { display: inline-flex; border: 2px solid var(--red); border-radius: 12px; padding: 4px; gap: 4px; }
+  .mode button { background: transparent; color: var(--red); border: 0; font-weight: 600; text-transform: uppercase;
+                 padding: 9px 16px; font-size: 15px; border-radius: 8px; cursor: pointer; letter-spacing: .02em; }
+  .mode button[aria-pressed="true"] { background: var(--red); color: #fff; }
+  .modenote { color: var(--muted); font-size: 13px; margin: 10px 0 0; }
+
+  /* Form */
   label { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 5px; }
   label .opt { font-weight: 400; color: var(--muted); }
-  input, textarea, select { width: 100%; font-size: 15px; color: var(--text); background: var(--field);
+  input, textarea, select { width: 100%; font-size: 15px; color: var(--text); background: #fff;
          border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; }
   textarea { resize: vertical; min-height: 64px; }
-  input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
-  .changed { background: var(--changed); border-color: var(--changed-line); }
+  input:focus, textarea:focus, select:focus { outline: 2px solid var(--ink); outline-offset: 1px; border-color: transparent; }
+  .changed { background: var(--changed); border-color: #d9a400; }
   .was { font-size: 13px; color: #8a6d00; margin-top: 4px; white-space: pre-line; }
-  .hint { color: var(--muted); font-size: 13px; margin-top: 8px; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 10px; }
   .invalid { border-color: var(--warn); }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
   .grid2 .full { grid-column: 1 / -1; }
   @media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
-  /* Preview always on white: that's how recipients see it */
-  .preview-box { background: #ffffff; border: 1px solid var(--line); border-radius: 8px; padding: 16px; overflow-x: auto; }
+  .grid2 > div > label:first-child { margin-top: 0; }
+  .grid2 > div { margin-top: 14px; } .grid2 > div:nth-child(-n+2) { margin-top: 0; }
+  @media (max-width: 640px) { .grid2 > div:nth-child(2) { margin-top: 14px; } }
+  .scratch { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 22px; }
+  .scratch span { font-weight: 600; text-transform: uppercase; font-size: 16px; }
+
+  /* Buttons */
+  button.solid, button.outline { font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: .02em;
+         border-radius: 10px; padding: 11px 20px; cursor: pointer; border: 2px solid var(--red); }
+  button.solid { background: var(--red); color: #fff; }
+  button.solid:hover:not(:disabled) { background: var(--red-dark); border-color: var(--red-dark); }
+  button.outline { background: #fff; color: var(--red); }
+  button.outline:hover:not(:disabled) { background: #fbeef0; }
+  button:disabled { opacity: .4; cursor: not-allowed; }
+  .btns { display: flex; flex-wrap: wrap; gap: 14px; }
+
+  /* Preview */
+  .preview-box { padding: 4px 0 0; overflow-x: auto; }
+  .a-prev .preview-box { padding: 0 14px; }
+  .phone .preview-box { max-width: 400px; }
   /* Isolate the signature from this page's styles so it spaces exactly as it will in an email */
   #sig { font: initial; line-height: normal; color: initial; letter-spacing: normal; text-align: left; }
-  .phone .preview-box { max-width: 380px; }
-  .mode { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; padding: 3px; margin: 0 0 14px; gap: 3px; }
-  .mode button { background: transparent; color: var(--text); border: 0; font-weight: 600; padding: 7px 16px; font-size: 14px; border-radius: 6px; }
-  .mode button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); }
-  .modenote { color: var(--muted); font-size: 13px; margin: -6px 0 14px; }
-  .confirm { display: flex; gap: 10px; align-items: flex-start; margin: 18px 0 14px; font-size: 14px; font-weight: 400; }
-  .confirm input { width: auto; margin-top: 3px; }
-  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
-  button { font-size: 15px; font-weight: 600; border-radius: 6px; padding: 10px 16px; cursor: pointer;
-           border: 1px solid var(--accent); background: var(--accent); color: var(--accent-text); }
-  button.secondary { background: transparent; color: var(--text); border-color: var(--line); }
-  button:disabled { opacity: .4; cursor: not-allowed; }
-  .status { min-height: 22px; margin-top: 10px; font-size: 14px; font-weight: 600; }
+
+  /* Steps 5 & 6 */
+  .changes { padding: 14px 16px; border-radius: 8px; background: var(--changed); border: 1px solid var(--changed-line); font-size: 14px; }
+  .changes.none { background: #f7f7f5; border-color: var(--line); color: var(--muted); }
+  .changes ul { margin: 6px 0 8px; padding-left: 18px; }
+  .changes a.mail { display: inline-block; margin-top: 6px; font-weight: 600; color: var(--text); }
+  .a-copy .step.second { margin-top: 30px; }
+  .confirm { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 18px; font-size: 14px; font-weight: 400; }
+  .confirm input { width: auto; margin-top: 3px; accent-color: var(--red); }
+  .status { min-height: 22px; margin-top: 12px; font-size: 14px; font-weight: 600; }
   .status.ok { color: var(--ok); } .status.err { color: var(--warn); }
-  .changes { margin-top: 14px; padding: 12px 14px; border-radius: 8px; background: var(--changed); border: 1px solid var(--changed-line); font-size: 14px; }
-  .changes ul { margin: 6px 0 0; padding-left: 18px; }
-  .changes a.mail { display: inline-block; margin-top: 10px; font-weight: 600; color: var(--text); }
-  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-  .tabs button { background: transparent; color: var(--text); border: 1px solid var(--line); font-weight: 500; padding: 7px 12px; font-size: 14px; }
-  .tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
-  ol { margin: 0; padding-left: 20px; } ol li { margin: 6px 0; }
+
+  /* Step 7 tabs */
+  .tabs { display: flex; flex-wrap: wrap; gap: 12px 16px; margin-bottom: 20px; }
+  .tabs button { background: #fff; color: var(--ink); border: 2px solid var(--ink); border-radius: 10px; font-weight: 600;
+                 text-transform: uppercase; padding: 8px 14px; font-size: 14px; cursor: pointer; letter-spacing: .02em; }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: #fff; }
+  ol { margin: 0; padding-left: 22px; } ol li { margin: 7px 0; }
 </style>
 </head>
 <body>
-<div class="wrap">
+<header class="top"><div class="wrap">
   <a href="https://www.raven.com.au/" target="_blank" rel="noopener"><svg class="logo" role="img" aria-label="Raven" width="160" height="49" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 85"> <defs> <style> .logo .cls-1 { fill-rule: evenodd; } </style> </defs> <path d="M72.29,16.19h6.6l15.18-.06c14.68,0,20.16,7.21,20.16,16.1,0,6.8-5.48,12.6-12.94,14.96l12.89,24.02h-15.38l-11.1-27.47,1.39-.12c6.85,0,12.39-4.76,12.39-10.62s-5.54-10.63-12.39-10.63h-4.11v48.62h-12.69V16.19h0Z"/> <path class="cls-1" d="M134.58,26.72l-8.6,25.29h16.35l-7.74-25.29h0ZM131.35,16.16h13.36l19.27,55.16h-15.75l-3.71-12.11h-20.99l-4.08,12h-6.82l18.72-55.04h0Z"/> <path d="M269.71,41.01c-.05-.06-.09-.12-.12-.18"/> <polygon points="213.77 35.45 230.21 35.45 230.21 42.05 213.77 42.05 213.77 64.6 232.34 64.6 232.34 71.2 213.77 71.2 210.64 71.2 200.25 71.2 200.25 16.16 210.64 16.16 213.77 16.16 232.34 16.16 232.34 22.76 213.77 22.76 213.77 35.45 213.77 35.45 213.77 35.45"/> <polygon points="271.65 16.16 278.65 16.16 278.65 71.2 271.65 71.2 244.47 29.47 244.47 71.2 237.47 71.2 237.47 16.16 253.77 16.16 271.65 44.07 271.65 16.16 271.65 16.16 271.65 16.16"/> <polygon points="154.3 16.16 169.66 16.16 180.53 44.98 191.76 16.16 198.51 16.16 176.4 73.49 154.3 16.16 154.3 16.16 154.3 16.16"/> <path d="M56.06,6.49c0-1.06.85-1.92,1.9-1.92s1.9.86,1.9,1.92-.85,1.92-1.9,1.92-1.9-.86-1.9-1.92h0Z"/> <polygon points="79.13 0 65.6 0 65.6 4.54 79.13 0 79.13 0 79.13 0"/> <polygon points="65.69 6.72 65.69 12.28 78.77 2.54 65.69 6.72 65.69 6.72 65.69 6.72"/> <polygon points="21.66 45.98 0 77.52 23.65 77.52 30 45.98 21.66 45.98 21.66 45.98 21.66 45.98"/> <path class="cls-1" d="M275.01,85c2.76,0,4.99-2.26,4.99-5.05s-2.23-5.02-4.99-5.02-5.01,2.26-5.01,5.02,2.24,5.05,5.01,5.05h0ZM275.01,84.33c-2.44,0-4.22-1.91-4.22-4.38s1.78-4.36,4.22-4.36,4.2,1.91,4.2,4.36-1.77,4.38-4.2,4.38h0ZM275.82,80.17c.99-.03,1.76-.44,1.76-1.55,0-.93-.5-1.49-1.98-1.49h-2.44v5.62h.69v-2.59h1.25l1.6,2.59h.82l-1.69-2.59h0ZM273.84,79.63v-1.99h1.6c.69,0,1.4.1,1.4.99,0,1.14-1.16,1.01-1.95,1.01h-1.04Z"/> <path d="M45.76,11.14l-22.82,32.43h9.61c10.41,0,18.88-8.44,18.88-18.93,0-5.32-2.17-10.06-5.67-13.5h0Z"/> <polygon points="62.9 60.73 59.48 64.24 63.86 64.22 63.86 66.51 59.74 66.52 63.08 70.04 61.44 71.62 41.17 50.26 44.34 50.26 56.95 63.57 61.28 59.13 62.9 60.73 62.9 60.73 62.9 60.73"/> <polygon points="40.83 60.65 37.39 64.18 42.1 64.18 42.1 66.46 37.51 66.46 40.85 69.93 39.22 71.52 32.99 65.03 32.99 50.27 35.26 50.27 35.26 63.11 39.21 59.06 40.83 60.65 40.83 60.65 40.83 60.65"/> <path class="cls-1" d="M53.08,6.46c0-2.14,1.72-3.88,3.85-3.88s3.85,1.74,3.85,3.88-1.72,3.88-3.85,3.88-3.85-1.74-3.85-3.88h0ZM51.48,3.06C53.93-.44,57.08.11,57.08.11h6.12c0,1.62.04,14.32.04,26.38,0,15.82-11.81,21.27-21.39,21.27h-9.2v-1.74c11.69-.04,21.16-9.6,21.16-21.38,0-6.04-2.49-11.5-6.49-15.39.54-.83,2.18-3.34,4.17-6.19h0Z"/> </svg></a>
   <h1>Email Signature Builder</h1>
   <p class="sub">Your signature is filled in from our records. Check it, fix anything that's wrong, then copy it into your email app.</p>
+</div></header>
 
-  <div class="layout">
-  <div class="col-left">
-  <div class="panel">
-    <div class="who">
-      <label for="who">Signature for</label>
-      <select id="who"></select>
+<main class="wrap"><div class="grid">
+
+  <section class="box a-s1">
+    <div class="step"><span class="num">1</span><h2>Choose your signature from the dropdown</h2></div>
+    <div class="center">
+      <div class="who"><label for="who">Signature for</label><select id="who"></select></div>
+      <p class="greet" id="greet" hidden></p>
     </div>
-    <p class="greet" id="greet" hidden></p>
-  </div>
+  </section>
 
-  <div class="panel" id="sigPanel">
-    <h2>Your signature</h2>
+  <section class="box a-s2">
+    <div class="step"><span class="num">2</span><h2>Select either a computer or phone email signature</h2></div>
     <div class="mode" role="group" aria-label="Signature type">
       <button type="button" data-m="desktop" aria-pressed="true">Computer</button>
       <button type="button" data-m="phone" aria-pressed="false">Phone</button>
     </div>
     <p class="modenote" id="modenote"></p>
-    <div class="preview-box"><div id="sig"></div></div>
+  </section>
 
-    <div id="changes" class="changes" hidden></div>
-
-    <label class="confirm"><input type="checkbox" id="checked">
-      <span>I have checked my name, position, phone numbers, email and address are correct.</span></label>
-    <div class="btns">
-      <button id="copyHtml" disabled>Copy signature</button>
-      <button id="copyText" class="secondary" disabled>Copy as plain text</button>
-      <button id="editBtn" class="secondary">Edit details</button>
-    </div>
-    <div class="status" id="status" role="status"></div>
-  </div>
-  </div>
-  <div class="col-right">
-
-  <div class="panel" id="editPanel" hidden>
-    <h2>Edit details</h2>
+  <section class="box a-form">
+    <div class="step"><span class="num">3</span><h2>Check your details in the email signature preview window</h2></div>
+    <hr class="rule">
+    <div class="step"><span class="num">4</span><h2>If edits are required, make them in the form below</h2></div>
     <form id="f" onsubmit="return false">
       <div class="grid2">
         <div><label for="FULL_NAME">Full name</label><input id="FULL_NAME"><div class="was" id="was-FULL_NAME" hidden></div></div>
@@ -121,15 +171,34 @@
         <div class="full"><label for="ADDRESS">Address</label><textarea id="ADDRESS" rows="4"></textarea><div class="was" id="was-ADDRESS" hidden></div></div>
       </div>
       <div class="hint">Changed fields are highlighted. Press Enter for a new line. Leave optional numbers blank to hide them. The phone signature doesn't show the fax number.</div>
-      <div class="btns" style="margin-top:14px"><button type="button" id="resetBtn" class="secondary">Undo my changes</button></div>
+      <div class="scratch"><span>Need to start from scratch?</span><button type="button" id="resetBtn" class="outline">Undo my changes</button></div>
     </form>
-  </div>
+  </section>
 
-  <div class="panel" id="pastePanel">
-    <h2 id="pasteTitle">Paste it into Outlook</h2>
+  <section class="box a-prev" id="sigPanel">
+    <h2 class="big">Email signature preview</h2>
+    <hr class="rule">
+    <div class="preview-box"><div id="sig"></div></div>
+  </section>
+
+  <section class="box a-copy">
+    <div class="step"><span class="num">5</span><h2>Your changes appear here</h2></div>
+    <div id="changes" class="changes none"></div>
+    <div class="step second"><span class="num">6</span><h2>Confirmation &amp; copy</h2></div>
+    <label class="confirm"><input type="checkbox" id="checked">
+      <span>I have checked my name, position, phone numbers, email and address are correct.</span></label>
+    <div class="btns">
+      <button id="copyHtml" class="solid" disabled>Copy signature</button>
+      <button id="copyText" class="outline" disabled>Copy as plain text</button>
+    </div>
+    <div class="status" id="status" role="status"></div>
+  </section>
+
+  <section class="box a-paste" id="pastePanel">
+    <div class="step"><span class="num">7</span><h2 id="pasteTitle">Outlook paste instructions</h2></div>
     <div class="tabs" role="tablist" id="tabs">
       <button role="tab" data-t="new" data-g="desktop">New Outlook (Windows &amp; Mac)</button>
-      <button role="tab" data-t="web" data-g="desktop">Outlook on the web</button>
+      <button role="tab" data-t="web" data-g="desktop">Web Outlook</button>
       <button role="tab" data-t="macold" data-g="desktop">Legacy Outlook for Mac</button>
       <button role="tab" data-t="classic" data-g="desktop">Classic Outlook (Windows)</button>
       <button role="tab" data-t="p-outlook-ios" data-g="phone">Outlook (iPhone)</button>
@@ -139,50 +208,50 @@
       <button role="tab" data-t="p-other" data-g="phone">Other apps</button>
     </div>
     <div data-p="p-outlook-ios" hidden><ol>
-      <li>Tap <b>Copy signature</b> above.</li>
+      <li>Tap <b>Copy signature</b> in step 6.</li>
       <li>Open the <b>Outlook</b> app, tap your <b>profile picture</b> (top left), then the <b>gear icon</b> (Settings).</li>
       <li>Tap <b>Signature</b> (under Mail). Delete what's there, then touch and hold in the box and tap <b>Paste</b>.</li>
       <li>Tap back to save. If you have several accounts, turn on <b>Per Account Signature</b> to set it for your Raven account only.</li>
-    </ol><p class="hint">If the formatting looks wrong after pasting, delete it, tap <b>Copy as plain text</b> instead and paste again.</p></div>
+    </ol><p class="hint">If the formatting looks wrong after pasting, delete it, tap <b>Copy as plain text</b> (step 6) instead and paste again.</p></div>
     <div data-p="p-outlook-android" hidden><ol>
-      <li>Tap <b>Copy as plain text</b> above (Outlook on Android only supports plain text signatures).</li>
+      <li>Tap <b>Copy as plain text</b> in step 6 (Outlook on Android only supports plain text signatures).</li>
       <li>Open the <b>Outlook</b> app, tap your <b>profile picture</b> (top left), then the <b>gear icon</b> (Settings).</li>
       <li>Tap <b>Signature</b>. Delete what's there, then touch and hold in the box and tap <b>Paste</b>.</li>
       <li>Tap the <b>✓</b> (top right) to save.</li>
     </ol></div>
     <div data-p="p-applemail" hidden><ol>
-      <li>Tap <b>Copy signature</b> above.</li>
+      <li>Tap <b>Copy signature</b> in step 6.</li>
       <li>Open the iPhone <b>Settings</b> app &gt; <b>Apps</b> &gt; <b>Mail</b> &gt; <b>Signature</b> (on older iPhones: Settings &gt; <b>Mail</b> &gt; Signature).</li>
       <li>Choose <b>Per Account</b> if you have several accounts. Delete what's there, then touch and hold and tap <b>Paste</b>.</li>
       <li>Tip: if the bold text disappears, <b>shake your iPhone</b> straight away and tap <b>Undo</b>. That brings the formatting back.</li>
       <li>Go back to save.</li>
     </ol></div>
     <div data-p="p-gmail" hidden><ol>
-      <li>Tap <b>Copy as plain text</b> above (the Gmail app only supports plain text signatures).</li>
+      <li>Tap <b>Copy as plain text</b> in step 6 (the Gmail app only supports plain text signatures).</li>
       <li>Open the <b>Gmail</b> app, tap the <b>menu</b> (☰, top left) &gt; <b>Settings</b> &gt; your <b>email account</b>.</li>
       <li><b>Android:</b> tap <b>Mobile signature</b>. <b>iPhone:</b> tap <b>Signature settings</b> and turn on <b>Mobile signature</b>.</li>
       <li>Paste into the box and tap <b>OK</b> / save.</li>
     </ol></div>
     <div data-p="p-other" hidden><ol>
-      <li>Tap <b>Copy as plain text</b> above (plain text works in every app).</li>
+      <li>Tap <b>Copy as plain text</b> in step 6 (plain text works in every app).</li>
       <li>Open your email app's <b>Settings</b> and look for <b>Signature</b>. On Samsung Email: menu (☰) &gt; gear icon &gt; your account &gt; <b>Signature</b>.</li>
       <li>Paste into the box and save.</li>
     </ol></div>
     <div data-p="new"><ol>
-      <li>Click <b>Copy signature</b> above.</li>
+      <li>Click <b>Copy signature</b> in step 6.</li>
       <li><b>Windows:</b> click the gear icon (Settings) &gt; <b>Accounts</b> &gt; <b>Signatures</b>.<br>
           <b>Mac:</b> <b>Outlook</b> menu &gt; <b>Settings</b> &gt; <b>Signatures</b>.</li>
       <li>Create a new signature, name it <b>Raven Signature</b>, click in the box and paste (<b>Ctrl+V</b> / <b>⌘V</b>).</li>
       <li>Set it as the default for new messages and replies/forwards, then <b>Save</b>.</li>
     </ol></div>
     <div data-p="web" hidden><ol>
-      <li>Click <b>Copy signature</b> above.</li>
+      <li>Click <b>Copy signature</b> in step 6.</li>
       <li>In Outlook on the web, click the gear icon &gt; <b>Accounts</b> &gt; <b>Signatures</b>.</li>
       <li>Create a new signature named <b>Raven Signature</b>, click in the box and paste (<b>Ctrl+V</b> / <b>⌘V</b>).</li>
       <li>Set it as the default for new messages and replies/forwards, then <b>Save</b>.</li>
     </ol></div>
     <div data-p="macold" hidden><ol>
-      <li>Click <b>Copy signature</b> above.</li>
+      <li>Click <b>Copy signature</b> in step 6.</li>
       <li>In Outlook, go to <b>Outlook</b> menu &gt; <b>Settings</b> (or Preferences) &gt; <b>Signatures</b>.</li>
       <li>Click <b>+</b>, name it <b>Raven Signature</b>, delete any sample text, click in the box and paste (<b>⌘V</b>).</li>
       <li>Close the editor, then choose it as the default for new messages and replies under <b>Choose default signature</b>.</li>
@@ -192,10 +261,9 @@
       <li>Or manually: click <b>Copy signature</b>, then in Outlook go to <b>File</b> &gt; <b>Options</b> &gt; <b>Mail</b> &gt; <b>Signatures</b>.</li>
       <li>Click <b>New</b>, name it <b>Raven Signature</b>, paste into the box (<b>Ctrl+V</b>), choose it for new messages and replies/forwards, then <b>OK</b>.</li>
     </ol></div>
-  </div>
-  </div>
-  </div>
-</div>
+  </section>
+
+</div></main>
 
 <script>
 // ================= SETTINGS =================================================================
@@ -394,19 +462,8 @@ function selectStaff(id) {
   for (const f of FIELDS) $(f.key).value = record ? (record[f.key] || '') : '';
   lastAlertKey = null;
   const greet = $('greet');
-  if (record && id !== OTHER) {
-    greet.textContent = `Hi ${record.FULL_NAME.split(' ')[0]}, here's your signature with the details we have on record. ` +
-                        `If anything is wrong, click Edit details.`;
-    greet.hidden = false;
-    $('editPanel').hidden = true;
-  } else if (id === OTHER) {
-    greet.textContent = 'Enter your details below. We will be told so we can add you to our records.';
-    greet.hidden = false;
-    $('editPanel').hidden = false;
-  } else {
-    greet.hidden = true;
-    $('editPanel').hidden = true;
-  }
+  greet.textContent = id === OTHER ? 'Enter your details in the form (step 4). We will be told so we can add you to our records.' : '';
+  greet.hidden = id !== OTHER;
   try {
     const u = new URL(location.href);
     (id && id !== OTHER) ? u.searchParams.set('staff', id) : u.searchParams.delete('staff');
@@ -447,12 +504,16 @@ function update() {
     box.innerHTML = '<b>You\u2019ve changed ' + ch.length + ' detail' + (ch.length > 1 ? 's' : '') + ':</b><ul>' +
       ch.map(c => `<li>${esc(c.field)}: <s>${esc(c.was || '(blank)').replace(/\n/g, ', ')}</s> \u2192 ${esc(c.now || '(blank)').replace(/\n/g, ', ')}</li>`).join('') +
       '</ul>' + (CONFIG.ALERT_ENDPOINT || CONFIG.ALERT_EMAIL ? 'We will be told about these changes when you copy your signature.' : '');
-    box.hidden = false;
-  } else box.hidden = true;
+    box.classList.remove('none');
+  } else {
+    box.textContent = !record ? 'Choose your name in step 1 to get started.'
+                    : isOther ? 'You\u2019re creating a new signature. We will be told when you copy it.'
+                    : 'No changes. Your details match our records.';
+    box.classList.add('none');
+  }
 
   const ready = !!record && FIELDS.every(f => !f.required || v[f.key]) && emailOk(v.EMAIL) && checked.checked;
   btnHtml.disabled = btnText.disabled = !ready;
-  $('editBtn').disabled = !record;
   status.textContent = ''; status.className = 'status';
 }
 
@@ -514,7 +575,7 @@ async function sendAlert() {
 function noteChanges(html) {
   const box = $('changes');
   box.innerHTML = box.innerHTML.replace(/We will be told[^<]*$/, '') + '<div style="margin-top:8px"><b>' + html + '</b></div>';
-  box.hidden = false;
+  box.classList.remove('none');
 }
 
 // ---- Copy -------------------------------------------------------------------------------------
@@ -539,24 +600,18 @@ async function copyRich() {
 }
 
 btnHtml.addEventListener('click', async () => {
-  (await copyRich()) ? say(mode === 'phone' ? 'Signature copied. Now paste it into your email app (steps below).'
-                                            : 'Signature copied. Now paste it into Outlook (steps below).', true)
+  (await copyRich()) ? say(mode === 'phone' ? 'Signature copied. Now paste it into your email app (see step 7).'
+                                            : 'Signature copied. Now paste it into Outlook (see step 7).', true)
                      : say(mode === 'phone' ? 'Couldn\u2019t copy automatically. Try Copy as plain text.'
                                             : 'Couldn\u2019t copy automatically. Select the preview with your mouse and copy it (Ctrl+C / \u2318C).', false);
   sendAlert();
 });
 btnText.addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText(currentText()); say('Plain text copied. Now paste it into your email app (steps below).', true); }
+  try { await navigator.clipboard.writeText(currentText()); say('Plain text copied. Now paste it into your email app (see step 7).', true); }
   catch (e) { say('Couldn\u2019t copy automatically. Select the preview text and copy it.', false); }
   sendAlert();
 });
 
-$('editBtn').addEventListener('click', () => {
-  $('editPanel').hidden = false;
-  if (!(window.matchMedia && matchMedia('(min-width: 1001px)').matches))
-    $('editPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  $('FULL_NAME').focus({ preventScroll: true });
-});
 $('resetBtn').addEventListener('click', () => {
   if (!record) return;
   for (const f of FIELDS) $(f.key).value = record[f.key] || '';
@@ -584,9 +639,9 @@ function setMode(m) {
   document.querySelectorAll('.mode button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.m === m)));
   $('sigPanel').classList.toggle('phone', m === 'phone');
   tabs.forEach(b => b.hidden = b.dataset.g !== m);
-  $('pasteTitle').textContent = m === 'phone' ? 'Paste it into your phone' : 'Paste it into Outlook';
+  $('pasteTitle').textContent = m === 'phone' ? 'Phone paste instructions' : 'Outlook paste instructions';
   $('modenote').textContent = m === 'phone'
-    ? 'A shorter signature for your phone. Phone email apps remove images and most formatting, so this version is text only.'
+    ? 'A shorter, text-only signature: phone email apps remove images and most formatting.'
     : 'The full signature for Outlook on your computer or the web.';
   showTab(m === 'phone' ? (isAndroid ? 'p-outlook-android' : 'p-outlook-ios') : 'new');
   update();
